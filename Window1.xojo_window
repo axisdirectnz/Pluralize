@@ -199,7 +199,7 @@ End
 #tag Events TransformButton
 	#tag Event
 		Sub Pressed()
-		  Var pluralizer As Pluralize = Pluralize.GetInstance()
+		  Var pluralizer As Pluralizer = Pluralizer.GetInstance()
 		  
 		  If ActionGroup.SelectedIndex = 0 Then
 		    resultLabel.Text = Pluralizer.Pluralize(sourceField.Text)

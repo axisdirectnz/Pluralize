@@ -1,5 +1,5 @@
 #tag Class
-Protected Class Pluralize
+Protected Class Pluralizer
 	#tag Method, Flags = &h21
 		Private Sub Constructor()
 		  Var Rules() As String
@@ -38,9 +38,9 @@ Protected Class Pluralize
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Shared Function GetInstance() As Pluralize
+		Shared Function GetInstance() As Pluralizer
 		  If mInstance Is Nil Then
-		    mInstance = New Pluralize
+		    mInstance = New Pluralizer
 		  End If
 		  
 		  Return mInstance
@@ -109,7 +109,7 @@ Protected Class Pluralize
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private Shared mInstance As Pluralize
+		Private Shared mInstance As Pluralizer
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
