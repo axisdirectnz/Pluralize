@@ -48,6 +48,42 @@ Protected Class Pluralizer
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function IsPlural(Word As String) As Boolean
+		  If Uncountables.IndexOf(word) > -1 Then
+		    Return False
+		  End If
+		  
+		  If IrregularPlurals.HasKey(word) Then
+		    Return True
+		  End If
+		  
+		  For Each r As RegEx In PluralRules
+		    Return True
+		  Next
+		  
+		  Return False
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function IsSingular(Word As String) As Boolean
+		  If Uncountables.IndexOf(word) > -1 Then
+		    Return False
+		  End If
+		  
+		  If IrregularSingles.HasKey(word) Then
+		    Return True
+		  End If
+		  
+		  For Each r As RegEx In SingularRules
+		    Return True
+		  Next
+		  
+		  Return False
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Pluralize(Word As String) As String
 		  Var Result As String = Transform(Word, Uncountables, IrregularSingles, PluralRules)
 		  
@@ -90,7 +126,6 @@ Protected Class Pluralizer
 		  End If
 		  
 		  For Each r As RegEx In Rules
-		    Var m As RegExMatch = r.Search(Word)
 		    If r.Search(Word) <> Nil Then
 		      Return r.Replace(Word, 0)
 		    End If
