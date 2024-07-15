@@ -107,7 +107,7 @@ Begin DesktopWindow Window1
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   428
+      Left            =   448
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
@@ -129,38 +129,7 @@ Begin DesktopWindow Window1
       Visible         =   True
       Width           =   100
    End
-   Begin DesktopButton TransformButton
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   False
-      Caption         =   "Transform"
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   22
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   336
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      MacButtonStyle  =   0
-      Scope           =   0
-      TabIndex        =   3
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   20
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   80
-   End
-   Begin DesktopRadioGroup ActionGroup
+   Begin DesktopRadioGroup actionGroup
       AllowAutoDeactivate=   True
       Bold            =   False
       Enabled         =   True
@@ -172,7 +141,7 @@ Begin DesktopWindow Window1
       Index           =   -2147483648
       InitialValue    =   "Pluralize\r\nSingularize"
       Italic          =   False
-      Left            =   224
+      Left            =   336
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
@@ -190,22 +159,96 @@ Begin DesktopWindow Window1
       Visible         =   True
       Width           =   100
    End
+   Begin DesktopRadioGroup taskGroup
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   45
+      Horizontal      =   False
+      Index           =   -2147483648
+      InitialValue    =   "Transform\r\nTest"
+      Italic          =   False
+      Left            =   224
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      SelectedIndex   =   0
+      TabIndex        =   5
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   20
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
+   End
 End
 #tag EndDesktopWindow
 
 #tag WindowCode
+	#tag Method, Flags = &h0
+		Sub DisplayResult()
+		  // Display Result
+		  Var Pluralizer As Pluralizer = Pluralizer.GetInstance()
+		  
+		  Select Case actionGroup.SelectedItem.Caption
+		  Case "Pluralize"
+		    Select Case taskGroup.SelectedItem.Caption
+		    Case "Transform"
+		      resultLabel.Text = Pluralizer.Pluralize(sourceField.Text)
+		    Case "Test"
+		      resultLabel.Text = pluralizer.IsSingular(sourceField.Text).ToString
+		    End Select
+		  Case "Singularize"
+		    Select Case taskGroup.SelectedItem.Caption
+		    Case "Transform"
+		      resultLabel.Text = Pluralizer.Singularize(sourceField.Text)
+		    Case "Test"
+		      resultLabel.Text = pluralizer.IsPlural(sourceField.Text).ToString
+		    End Select
+		  End Select
+		  
+		End Sub
+	#tag EndMethod
+
+
 #tag EndWindowCode
 
-#tag Events TransformButton
+#tag Events sourceField
 	#tag Event
-		Sub Pressed()
-		  Var pluralizer As Pluralize = Pluralize.GetInstance()
+		Sub TextChanged()
+		  DisplayResult()
 		  
-		  If ActionGroup.SelectedIndex = 0 Then
-		    resultLabel.Text = Pluralizer.Pluralize(sourceField.Text)
-		  Else
-		    resultLabel.Text = Pluralizer.Singularize(sourceField.Text)
-		  End If
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events actionGroup
+	#tag Event
+		Sub SelectionChanged(button As DesktopRadioButton)
+		  DisplayResult()
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events taskGroup
+	#tag Event
+		Sub SelectionChanged(button As DesktopRadioButton)
+		  Select Case actionGroup.SelectedItem.Caption
+		  Case "Transform"
+		    actionGroup.ItemAt(0).Caption = "Pluralize"
+		    actionGroup.ItemAt(1).Caption = "Singularize"
+		  Case "Test"
+		    actionGroup.ItemAt(0).Caption = "Plural ?"
+		    actionGroup.ItemAt(1).Caption = "Single ?"
+		  End Select
+		  
+		  DisplayResult()
 		  
 		End Sub
 	#tag EndEvent

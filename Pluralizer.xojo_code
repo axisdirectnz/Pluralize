@@ -1,5 +1,5 @@
 #tag Class
-Protected Class Pluralize
+Protected Class Pluralizer
 	#tag Method, Flags = &h21
 		Private Sub Constructor()
 		  Var Rules() As String
@@ -38,12 +38,48 @@ Protected Class Pluralize
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Shared Function GetInstance() As Pluralize
+		Shared Function GetInstance() As Pluralizer
 		  If mInstance Is Nil Then
-		    mInstance = New Pluralize
+		    mInstance = New Pluralizer
 		  End If
 		  
 		  Return mInstance
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function IsPlural(Word As String) As Boolean
+		  If Uncountables.IndexOf(word) > -1 Then
+		    Return False
+		  End If
+		  
+		  If IrregularPlurals.HasKey(word) Then
+		    Return True
+		  End If
+		  
+		  For Each r As RegEx In PluralRules
+		    Return True
+		  Next
+		  
+		  Return False
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function IsSingular(Word As String) As Boolean
+		  If Uncountables.IndexOf(word) > -1 Then
+		    Return False
+		  End If
+		  
+		  If IrregularSingles.HasKey(word) Then
+		    Return True
+		  End If
+		  
+		  For Each r As RegEx In SingularRules
+		    Return True
+		  Next
+		  
+		  Return False
 		End Function
 	#tag EndMethod
 
@@ -90,7 +126,6 @@ Protected Class Pluralize
 		  End If
 		  
 		  For Each r As RegEx In Rules
-		    Var m As RegExMatch = r.Search(Word)
 		    If r.Search(Word) <> Nil Then
 		      Return r.Replace(Word, 0)
 		    End If
@@ -109,7 +144,7 @@ Protected Class Pluralize
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private Shared mInstance As Pluralize
+		Private Shared mInstance As Pluralizer
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
