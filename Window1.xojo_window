@@ -198,23 +198,22 @@ End
 		  // Display Result
 		  Var Pluralizer As Pluralizer = Pluralizer.GetInstance()
 		  
-		  Select Case actionGroup.SelectedItem.Caption
-		  Case "Pluralize"
-		    Select Case taskGroup.SelectedItem.Caption
-		    Case "Transform"
-		      resultLabel.Text = Pluralizer.Pluralize(sourceField.Text)
-		    Case "Test"
-		      resultLabel.Text = pluralizer.IsSingular(sourceField.Text).ToString
-		    End Select
-		  Case "Singularize"
-		    Select Case taskGroup.SelectedItem.Caption
-		    Case "Transform"
+		  Select Case taskGroup.SelectedItem.Caption
+		  Case "Transform"
+		    Select Case actionGroup.SelectedItem.Caption
+		    Case "Singularize"
 		      resultLabel.Text = Pluralizer.Singularize(sourceField.Text)
-		    Case "Test"
-		      resultLabel.Text = pluralizer.IsPlural(sourceField.Text).ToString
+		    Case "Pluralize"
+		      resultLabel.Text = Pluralizer.Pluralize(sourceField.Text)
+		    End Select
+		  Case "Test"
+		    Select Case actionGroup.SelectedItem.Caption
+		    Case "Single ?"
+		      resultLabel.Text = Pluralizer.IsSingular(sourceField.Text).ToString
+		    Case "Plural ?"
+		      resultLabel.Text = Pluralizer.IsPlural(sourceField.Text).ToString
 		    End Select
 		  End Select
-		  
 		End Sub
 	#tag EndMethod
 
@@ -239,7 +238,7 @@ End
 #tag Events taskGroup
 	#tag Event
 		Sub SelectionChanged(button As DesktopRadioButton)
-		  Select Case actionGroup.SelectedItem.Caption
+		  Select Case me.SelectedItem.Caption
 		  Case "Transform"
 		    actionGroup.ItemAt(0).Caption = "Pluralize"
 		    actionGroup.ItemAt(1).Caption = "Singularize"

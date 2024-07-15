@@ -58,7 +58,9 @@ Protected Class Pluralizer
 		  End If
 		  
 		  For Each r As RegEx In PluralRules
-		    Return True
+		    If r.Search(Word) <> Nil Then
+		      Return True
+		    End If
 		  Next
 		  
 		  Return False
@@ -76,7 +78,10 @@ Protected Class Pluralizer
 		  End If
 		  
 		  For Each r As RegEx In SingularRules
-		    Return True
+		    Var rm As RegExMatch = r.Search(Word)
+		    If rm <> Nil Then
+		      Return True
+		    End If
 		  Next
 		  
 		  Return False
