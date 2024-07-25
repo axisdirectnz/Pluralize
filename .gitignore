@@ -1,6 +1,7 @@
 # Xojo (formerly REALbasic and Real Studio)
 
 Builds*
+Debug*
 *.debug
 *.debug.app
 Debug*.exe
